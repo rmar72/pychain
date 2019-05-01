@@ -11,6 +11,7 @@ class Blockchain(object):
     def __init__(self):
         self.chain = []
         self.current_transactions = []
+        self.nodes = set()
 
         # create the genesis block
         self.new_block(previous_hash=1, proof=100)
@@ -132,7 +133,7 @@ def mine():
         amount=1,
     )
 
-    # Forge the new Block by addind it to the chain
+    # Forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(last_block)
     block = blockchain.new_block(proof, previous_hash)
 
@@ -167,6 +168,15 @@ def full_chain():
         'length': len(blockchain.chain),
     }
     return jsonify(response), 200
+
+    @app.route('/nodes/register', methods=['POST'])
+    def register_node(seld, address):
+        """
+        Add a new node to the list of nodes
+
+        :param address: <str> Address of node. Eg. 'http://192.168.0.5.5000'
+        :return: None
+        """
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
